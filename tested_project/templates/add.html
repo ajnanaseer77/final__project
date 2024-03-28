@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block body %}
+
+  <h1>Add a New Movie</h1>
+
+    <!-- Form to add movie details -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="name">Movie Name:</label><br>
+        <input type="text" id="name" name="name" placeholder="Enter the movie name"><br>
+
+        <label for="slug">Slug:</label><br>
+        <input type="text" id="slug" name="slug" placeholder="Enter the movie name"><br>
+
+        <label for="cast">Cast:</label><br>
+        <input type="text" id="cast" name="cast" placeholder="Enter the movie cast"><br>
+
+
+        <label for="trailer_link">trailer_link:</label><br>
+        <input type="url" id="trailer_link" name="trailer_link" placeholder="Enter the movie youtube trailer link"><br>
+
+        <label for="desc">Description:</label><br>
+        <textarea id="desc" name="desc" placeholder="Enter the movie description"></textarea><br>
+
+        <label for="date">Release Date:</label><br>
+        <input type="date" id="date" name="date"><br>
+
+        <label for="img">Poster Image:</label><br>
+        <input type="file" id="img" name="img"><br>
+        <select id="category" name="category"> <!-- Added name attribute to identify the field in form submission -->
+    {% for cat in links %}
+        <option value="{{ cat.name }}">{{ cat.name }}</option>
+    {% endfor %}
+</select><br>
+
+        <input type="submit" value="Add Movie">
+    </form>
+<script>
+    // Get references to the name and slug input fields
+    const nameInput = document.getElementById('name');
+    const slugInput = document.getElementById('slug');
+
+    // Function to update the slug field based on the name field
+    const updateSlug = () => {
+        const nameValue = nameInput.value.trim().toLowerCase(); // Get the trimmed and lowercased movie name
+        const slugValue = nameValue.replace(/\s+/g, '-'); // Replace spaces with hyphens
+        slugInput.value = slugValue; // Update the slug field value
+    };
+
+    // Add event listener to the name field to update the slug field whenever the name changes
+    nameInput.addEventListener('input', updateSlug);
+</script>
+{% for message in messages %}
+<div class="alert alert-info">
+
+    <strong>Info!</strong> {{message}}.
+
+  </div>
+  {% endfor %}
+{% endblock %}
+
+
